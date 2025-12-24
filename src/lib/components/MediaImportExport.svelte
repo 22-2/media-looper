@@ -86,6 +86,17 @@
     download(title, new Blob([exportJSON], {type: "application/json"}))
   }
 
+  function reset() {
+    if (confirm("Are you sure you want to delete all loops for this video?")) {
+      store.transaction(() => {
+        const loopIds = relationships.getLocalRowIds('mediaLoops', sourceId)
+        for (const loopId of loopIds) {
+          store.delRow('loops', loopId)
+        }
+      })
+    }
+  }
+
 </script>
 
 {#if importError}
@@ -93,6 +104,7 @@
 {/if}
 <a href="#import-media" onclick={pd(importMediaFromFile)}>Import</a>
 <a href="#export-media" onclick={pd(exportMediaToFile)}>Export</a>
+<a href="#reset-media" onclick={pd(reset)}>Reset</a>
 
 <style>
     a {

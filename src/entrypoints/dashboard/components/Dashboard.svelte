@@ -23,6 +23,15 @@
     download('media-looper-backup.json', new Blob([JSON.stringify(exportDatabase(store))], {type: "application/json"}))
   }
 
+  function resetDatabase() {
+    if (confirm("Are you sure you want to delete ALL your data? This will remove all videos and loops.")) {
+      store.transaction(() => {
+        store.delTable('medias')
+        store.delTable('loops')
+      })
+    }
+  }
+
   async function importLoops() {
     const file = await pickFile({accept: ".json"})
     const content = await readFileText(file)
@@ -78,6 +87,7 @@
   <div class="my-4 flex gap-3">
     <Button on:click={downloadDatabase}>Export database</Button>
     <Button on:click={importLoops}>Import database</Button>
+    <Button color="red" on:click={resetDatabase}>Reset database</Button>
     {#await prevData then x}
       {#if Object.entries(x).length > 0}
         <Button on:click={importLoopsPreviousPreview}>Import from previous version</Button>
