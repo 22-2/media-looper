@@ -6,11 +6,9 @@
   import {useQueriesResultTable} from "@/lib/tinybase/tinybase-stores";
   import LoopEntry from "@/lib/components/LoopEntry.svelte";
   import {loopTree} from "@/lib/misc/loop-tree";
-  import {partition} from "@/lib/helpers/array";
-  import {secondsFromTime} from "@/lib/helpers/time";
   import type {Loop} from "@/lib/model";
   import * as amplitude from '@amplitude/analytics-browser';
-  import {sourceInfo, videoChapters, videoIdFromSourceId} from "@/lib/youtube/ui";
+  import {sourceInfo, videoIdFromSourceId} from "@/lib/youtube/ui";
   import {channelSender, runtimeOnMessageSender} from "@/lib/misc/browser-network";
   import ConnectionStatusIndicator from "@/lib/components/ConnectionStatusIndicator.svelte";
   import {nanoid} from "nanoid";
@@ -40,31 +38,6 @@
       if (info) store.setPartialRow('medias', sourceId, info)
     }
   }
-
-  $effect(() => {
-    sourceId
-
-    const chapters = videoChapters(video)
-    const groups = partition(chapters, 2, 1)
-    const loops = groups.map(([a, b]) => {
-      return {
-        id: sourceId + '-' + a.time,
-        label: a.title,
-        startTime: secondsFromTime(a.time),
-        endTime: secondsFromTime(b.time),
-        source: sourceId,
-        readonly: true
-      }
-    })
-
-    if (loops.length > 0) {
-      ensureMediaInfo()
-    }
-
-    for (const {id, ...loop} of loops) {
-      store.setRow('loops', id, loop as Row)
-    }
-  })
 
   function log(event: string, details?: {[key: string]: any}) {
     amplitude.track(event, {sourceId, ...details})

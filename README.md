@@ -12,10 +12,6 @@ The extension adds a new button into the YouTube player video toolbar:
 
 ![Open YouTube Looper modal](./doc-assets/start-dialog.png)
 
-When a video has chapters (like in this example), YouTube Looper will automatically create a loop on each chapter:
-
-![Demo with chapters](./doc-assets/open-with-chapters.png)
-
 ### Creating a loop
 
 When you start a new loop, the current video time will be the start time of a loop. You can start a loop with the video
