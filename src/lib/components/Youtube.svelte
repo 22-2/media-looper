@@ -32,6 +32,21 @@
   // need to use in this format so it clears the loop when the video changes
   let activeLoop = $state(null) as Id | null;
   let popupVisible = $state(false) as boolean;
+  let video = $state<HTMLVideoElement | null>(null);
+
+  $effect(() => {
+    const findVideo = () => {
+      const el = document.querySelector("video");
+      if (el !== video) {
+        video = el;
+        if (video) console.log("[Youtube] Video element detected/updated:", video);
+      }
+    }
+
+    findVideo();
+    const interval = setInterval(findVideo, 1000);
+    return () => clearInterval(interval);
+  })
 
   $effect.pre(() => {
     sourceId
@@ -152,7 +167,7 @@
     </button>
 
     {#if activeLoop}
-      <ActiveLoop id={activeLoop} bind:this={activeComponent}/>
+      <ActiveLoop {video} id={activeLoop} bind:this={activeComponent}/>
     {/if}
 
       <div class="ytp-popup ytp-settings-menu ml-popup" use:portal={{target: ".html5-video-player"}} style="display: {popupVisible ? 'block' : 'none'}">
