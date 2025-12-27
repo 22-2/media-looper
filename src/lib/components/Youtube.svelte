@@ -100,6 +100,18 @@
     }
   }
 
+  function handleOutsideClick(e: MouseEvent) {
+    if (!popupVisible) return;
+
+    const target = e.target as HTMLElement;
+    const isInsidePopup = target.closest('.ml-popup');
+    const isInsideButton = target.closest('.looper-button');
+
+    if (!isInsidePopup && !isInsideButton) {
+      popupVisible = false;
+    }
+  }
+
   function shortcutsHandler(e: KeyboardEvent) {
     if (e.altKey && e.code === "KeyV") {
       toggleVisible();
@@ -156,11 +168,11 @@
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
 </svelte:head>
 
-<svelte:document on:keydown={shortcutsHandler} />
+<svelte:document on:keydown={shortcutsHandler} on:click={handleOutsideClick} />
 
 {#await ctx.ready then x}
   {#if sourceId}
-    <button class="ytp-button" use:portal={{target: ".ytp-right-controls", position: 'start'}} onclick={toggleVisible}>
+    <button class="ytp-button looper-button" use:portal={{target: ".ytp-right-controls", position: 'start'}} onclick={toggleVisible}>
       <div class="button-inner-container">
         <img src={logoData} alt="Youtube Looper" />
       </div>

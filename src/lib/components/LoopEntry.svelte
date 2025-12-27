@@ -61,8 +61,8 @@
     <div>{formatTime(loop.startTime, formatPrecision)}</div>
   {:else}
     <Icon icon="minus-circle" onclick={(e: MouseEvent) => $loopSource.startTime = Math.max(loop.startTime - p(e), 0)} />
-    <EditableTime bind:value={$loopSource.startTime} {formatPrecision} />
-    <Icon icon="plus-circle" onclick={(e: MouseEvent) => $loopSource.startTime = Math.min(loop.startTime + p(e), loop.endTime)} />
+    <EditableTime bind:value={$loopSource.startTime} {formatPrecision} min={0} max={loop.endTime - 1} />
+    <Icon icon="plus-circle" onclick={(e: MouseEvent) => $loopSource.startTime = Math.min(loop.startTime + p(e), loop.endTime - 1)} />
   {/if}
 
   <div>/</div>
@@ -70,8 +70,8 @@
   {#if loop.readonly}
     <div>{formatTime(loop.endTime, formatPrecision)}</div>
   {:else}
-    <Icon icon="minus-circle" onclick={(e: MouseEvent) => $loopSource.endTime = Math.max(loop.endTime - p(e), loop.startTime)} />
-    <EditableTime bind:value={$loopSource.endTime} {formatPrecision} />
+    <Icon icon="minus-circle" onclick={(e: MouseEvent) => $loopSource.endTime = Math.max(loop.endTime - p(e), loop.startTime + 1)} />
+    <EditableTime bind:value={$loopSource.endTime} {formatPrecision} min={loop.startTime + 1} max={video?.duration || 0} />
     <Icon icon="plus-circle" onclick={(e: MouseEvent) => $loopSource.endTime = Math.min(loop.endTime + p(e), video?.duration || 0)} />
   {/if}
 

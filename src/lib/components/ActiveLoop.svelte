@@ -75,11 +75,13 @@
       ticker();
     };
     video.addEventListener("ended", onEnded)
+    video.addEventListener("timeupdate", ticker)
 
     return () => {
       console.log("[ActiveLoop] Effect: Cleaning up");
       cancelAnimationFrame(frame);
       video.removeEventListener("ended", onEnded)
+      video.removeEventListener("timeupdate", ticker)
     }
   })
 

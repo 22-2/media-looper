@@ -4,8 +4,8 @@ import {nanoid} from "nanoid";
 export function cutLoop(loop: Loop, cutTime: number): (Loop & Identified)[] {
   const {startTime, endTime} = loop
 
-  if (cutTime < startTime) throw new Error("Cut time must be after loop start time")
-  if (cutTime >= endTime) throw new Error("Cut time must be before loop end time")
+  if (cutTime < startTime + 1) throw new Error("Cut time must be at least 1s after loop start time")
+  if (cutTime > endTime - 1) throw new Error("Cut time must be at least 1s before loop end time")
 
   const leftLoop = {
     ...loop,

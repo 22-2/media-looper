@@ -2,9 +2,11 @@
   import {formatTime, secondsFromTime} from "@/lib/helpers/time";
   import {sp} from "@/lib/helpers/events";
 
-  let {value = $bindable(), formatPrecision}: {
+  let {value = $bindable(), formatPrecision, min, max}: {
     value: any,
-    formatPrecision: number | undefined
+    formatPrecision: number | undefined,
+    min?: number,
+    max?: number
   } = $props()
 
   let input: HTMLInputElement | undefined = $state()
@@ -32,7 +34,12 @@
 
     onblur={() => {
       editing = false
-      if (baseValue) value = secondsFromTime(baseValue) || value
+      if (baseValue) {
+        let newValue = secondsFromTime(baseValue) || value
+        if (min !== undefined) newValue = Math.max(newValue, min)
+        if (max !== undefined) newValue = Math.min(newValue, max)
+        value = newValue
+      }
     }}
 
     onkeydowncapture={sp((e: KeyboardEvent) => {

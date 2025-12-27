@@ -14,6 +14,12 @@
   export function record() {
     if (startTime !== undefined) {
       const endTime = video.currentTime
+
+      if (endTime - startTime < 1) {
+        startTime = undefined
+        return
+      }
+
       const loop = {startTime, endTime, label: "New loop"}
 
       onNewLoop(loop)

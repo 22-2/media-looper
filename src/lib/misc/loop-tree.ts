@@ -30,5 +30,5 @@ function iterateBreak([first, ...rest]: Loops): Loops {
 }
 
 export function loopTree(loops: {[key: Id]: LoopEntry}) {
-  return iterateBreak(sortLoops(Object.entries(loops)))
+  return sortLoops(Object.entries(loops))
 }
