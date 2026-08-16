@@ -1,0 +1,7 @@
+allowBuilds:
+  '@swc/core': true
+  cbor-extract: true
+  dtrace-provider: true
+  esbuild: true
+  spawn-sync: true
+  svelte-preprocess: true
